@@ -10,12 +10,15 @@ export async function POST(request: Request) {
     dbConnect()
     try {
         const { identifier, password } = await request.json()
+        
         if (!identifier || !password) {
             return Response.json({
                 success: false,
                 message: "Identifier and password are required"
             }, { status: 500 });
         }
+        console.log("Login data",identifier, password);
+        
 
         // check user exists
         const user = await UserModel.findOne({
@@ -45,6 +48,10 @@ export async function POST(request: Request) {
                 message: "Incorrect Credentials"
             }, { status: 500 });
         }
+        
+        console.log("Pass Correct, user::", user);
+        
+
         const userId = user?._id
         const token = generateToken(userId)
         if (token) {
@@ -57,6 +64,10 @@ export async function POST(request: Request) {
             }, { status: 500 });
         }
 
+
+        
+        console.log("Sab changa Si ye lo user");
+        
         return Response.json(
             {
                 success: true,
