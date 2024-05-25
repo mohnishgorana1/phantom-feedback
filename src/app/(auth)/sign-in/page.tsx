@@ -1,9 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -28,7 +26,7 @@ import { setCookie } from 'cookies-next';
 
 function SignInPage() {
   const { toast } = useToast()
-  const router = useRouter()
+  const router = useRouter(); // Correct usage
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const [formData, setFormData] = useState({
@@ -54,7 +52,7 @@ function SignInPage() {
       return
     }
     console.log(formData);
-    
+
 
     setIsSubmitting(true)
     try {
@@ -76,7 +74,6 @@ function SignInPage() {
           description: response?.data?.message
         })
       }
-
       router.replace('/dashboard');
     } catch (error: any) {
       console.error("Error in sign-in user", error);
