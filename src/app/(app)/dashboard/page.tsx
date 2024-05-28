@@ -16,6 +16,7 @@ import { boolean } from "zod"
 
 function Dashboard() {
   const [userId, setUserId] = useState(null)
+  const [username, setUsername] = useState("")
   const [messages, setMessages] = useState<Message[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [isSwitchLoading, setIsSwitchLoading] = useState(false)
@@ -27,9 +28,14 @@ function Dashboard() {
   const { watch, register, setValue } = form
   const acceptMessages = watch('acceptMessages')
 
+
+
   const handleDeleteMessage = (messageId: string) => {
     setMessages(messages.filter((message) => message._id !== messageId))
+    // TODO: api call
   }
+
+
   const checkAcceptMessageStatus = async () => {
     setIsSwitchLoading(true)
     try {
@@ -42,6 +48,28 @@ function Dashboard() {
       })
     } finally {
       setIsSwitchLoading(false)
+    }
+  }
+
+  // handle switch change
+  const updateAcceptMessage = async () => {
+    try {
+      console.log("acceptMessages status before change", acceptMessages);
+
+      const response = await axios.patch('/api/accept-messages', {
+        userId: userId,
+        isAcceptingMessages: !acceptMessages
+      })
+      setValue('acceptMessages', !acceptMessages)
+      toast({
+        title: response.data.message
+      })
+      console.log("acceptMessages status after change", acceptMessages);
+    } catch (error) {
+      toast({
+        title: 'Error updating status of isAccepting Messages',
+        variant: "destructive"
+      })
     }
   }
 
@@ -73,28 +101,6 @@ function Dashboard() {
   }
 
 
-  // handle switch change
-  const updateAcceptMessage = async () => {
-    try {
-      console.log("acceptMessages status before change", acceptMessages);
-
-      const response = await axios.patch('/api/accept-messages', {
-        userId: userId,
-        isAcceptingMessages: !acceptMessages
-      })
-      setValue('acceptMessages', !acceptMessages)
-      toast({
-        title: response.data.message
-      })
-      console.log("acceptMessages status after change", acceptMessages);
-    } catch (error) {
-      toast({
-        title: 'Error updating status of isAccepting Messages',
-        variant: "destructive"
-      })
-    }
-  }
-
   // get userId 
   useEffect(() => {
     // find user
@@ -104,6 +110,7 @@ function Dashboard() {
     }
     else {
       const currentUser = JSON.parse(user)
+      setUsername(currentUser.username)
       console.log(currentUser.id);
       setUserId(currentUser.id)
       console.log(userId);
@@ -112,6 +119,19 @@ function Dashboard() {
     checkAcceptMessageStatus()
 
   }, [userId])
+
+
+  const baseUrl = `${window.location.protocol}//${window.location.host}`
+  const profileUrl = `${baseUrl}/u/${username}`
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(profileUrl)
+    toast({
+      title: "URL Copied"
+    })
+  }
+  
+
 
   if (!userId) {
     return <div className="flex items-center justify-center">
@@ -126,13 +146,13 @@ function Dashboard() {
       <div className="mb-4">
         <h2 className="text-lg font-semibold mb-2">Copy Your Unique Link</h2>{' '}
         <div className="flex items-center">
-          {/* <input
+          <input
             type="text"
             value={profileUrl}
             disabled
             className="input input-bordered w-full p-2 mr-2"
           />
-          <Button onClick={copyToClipboard}>Copy</Button> */}
+          <Button onClick={copyToClipboard}>Copy</Button>
         </div>
       </div>
 
