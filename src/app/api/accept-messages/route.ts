@@ -9,13 +9,17 @@ import UserModel from "@/model/User";
 export async function PATCH(request: Request) {
     await dbConnect();
     try {
-        const {userId, isAcceptingMessages} = await request.json()
+        const { userId, isAcceptingMessages } = await request.json()
+        console.log("userId", userId);
+        console.log("isAcceptingMessages", isAcceptingMessages);
+        
+        
         const user = await UserModel.findByIdAndUpdate(
             userId,
-            {isAcceptingMessages},
-            {new: true}
+            { isAcceptingMessages },
+            { new: true }
         )
-        if(!user){
+        if (!user) {
             return Response.json(
                 {
                     success: false,
@@ -45,8 +49,43 @@ export async function PATCH(request: Request) {
         )
     }
 }
+
+
+
 // to check the status of accepting messages
-export async function GET(request: Request) {
+export async function POST(request: Request) {
     await dbConnect();
-// TODO
+    try {
+        const { userId } = await request.json()
+        console.log("userId", userId);
+        const foundUser = await UserModel.findById(userId)
+        console.log("found User", foundUser);
+        
+        if (!foundUser) {
+            return Response.json(
+                {
+                    success: false,
+                    message: "User not found"
+                },
+                { status: 404 }
+            )
+        }
+        return Response.json(
+            {
+                success: true,
+                message: "",
+                isAcceptingMessages: foundUser.isAcceptingMessages
+            },
+            { status: 200 }
+        )
+    } catch (error) {
+        console.error("Failed To Fetch Status of Accepting Messages of Requested User", error);
+        return Response.json(
+            {
+                success: false,
+                message: "Failed To Fetch Status of Accepting Messages of Requested User"
+            },
+            { status: 500 }
+        )
+    }
 }

@@ -36,10 +36,10 @@ export async function POST(request: Response) {
         console.log("Message Send Successfully!");
         return Response.json(
             {
-                success: false,
+                success: true,
                 message: "Message Send Successfully!"
             },
-            { status: 500 }
+            { status: 200 }
         )
     } catch (error) {
         console.error("Can't Send Phantom Feedback, Internal Server Error", error);
