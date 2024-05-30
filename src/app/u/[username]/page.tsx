@@ -68,13 +68,13 @@ export default function SendMessage() {
             </h1>
             <form onSubmit={onSubmit} className='flex flex-col gap-5'>
                 <h1 className='font-semibold'>Send Anonymous Message to @{username}</h1>
-                <textarea
+                <input
                     placeholder="Type your Phantom message here!."
                     name='content'
                     onChange={handleInputs}
                     value={messageData.content}
                     required
-                    className='w-full '
+                    className='w-full py-5 pl-3 border'
                 />
                 <div className="flex justify-center">
                     {isLoading ? (
@@ -90,7 +90,7 @@ export default function SendMessage() {
                 </div>
             </form>
 
-            <Separator className="my-6" />
+            <Separator className="my-6 sm:my-16" />
             <div className="text-center">
                 <div className="mb-4">Get Your Message Board</div>
                 <Link href={'/sign-up'}>
