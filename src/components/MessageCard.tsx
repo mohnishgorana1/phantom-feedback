@@ -34,7 +34,9 @@ function MessageCard({ message, onMessageDelete }: MessageCardProps) {
   const { toast } = useToast()
 
   const handleDeleteConfirm = async () => {
-    const response = await axios.delete(`/api/delete-message/${message._id}`)
+    const response = await axios.post(`/api/delete-message`, {
+      messageId: message._id
+    })
     if (response.data.success == true) {
       toast({
         title: "Success",
@@ -49,6 +51,7 @@ function MessageCard({ message, onMessageDelete }: MessageCardProps) {
       <CardHeader className="flex flex-col gap-5">
         <div className="flex w-full items-center justify-between">
           <CardTitle>{message.content}</CardTitle>
+          <p>{message._id}</p>
           <AlertDialog>
             <AlertDialogTrigger>
               <Button variant="destructive">

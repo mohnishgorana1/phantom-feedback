@@ -30,10 +30,7 @@ function Dashboard() {
 
 
 
-  const handleDeleteMessage = (messageId: string) => {
-    setMessages(messages.filter((message) => message._id !== messageId))
-    // TODO: api call
-  }
+
 
 
   const checkAcceptMessageStatus = async () => {
@@ -100,7 +97,10 @@ function Dashboard() {
     }
   }
 
-
+  const handleDeleteMessage = (messageId: string) => {
+    setMessages(messages.filter((message) => message._id !== messageId))
+    fetchMessages()
+  }
   // get userId 
   useEffect(() => {
     // find user
