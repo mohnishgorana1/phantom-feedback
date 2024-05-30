@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -74,7 +74,7 @@ function SignInPage() {
           description: response?.data?.message
         })
         setTimeout(() => {
-          router.replace('/dashboard');
+          router.push('/dashboard')
         }, 1000)
       }
     } catch (error: any) {
