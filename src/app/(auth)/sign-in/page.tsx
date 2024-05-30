@@ -73,8 +73,10 @@ function SignInPage() {
           title: "Success",
           description: response?.data?.message
         })
+        setTimeout(() => {
+          router.replace('/dashboard');
+        }, 1000)
       }
-      router.replace('/dashboard');
     } catch (error: any) {
       console.error("Error in sign-in user", error);
       toast({

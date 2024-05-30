@@ -28,10 +28,8 @@ function Dashboard() {
   const { watch, register, setValue } = form
   const acceptMessages = watch('acceptMessages')
 
-
-
-
-
+  
+  // * ------------Functions---------------------
 
   const checkAcceptMessageStatus = async () => {
     setIsSwitchLoading(true)
@@ -50,6 +48,7 @@ function Dashboard() {
 
   // handle switch change
   const updateAcceptMessage = async () => {
+    setIsSwitchLoading(true)
     try {
       console.log("acceptMessages status before change", acceptMessages);
 
@@ -57,6 +56,7 @@ function Dashboard() {
         userId: userId,
         isAcceptingMessages: !acceptMessages
       })
+
       setValue('acceptMessages', !acceptMessages)
       toast({
         title: response.data.message
@@ -67,13 +67,14 @@ function Dashboard() {
         title: 'Error updating status of isAccepting Messages',
         variant: "destructive"
       })
+    }finally{
+      setIsLoading(false)
     }
   }
 
   // fetch all messages
   const fetchMessages = async () => {
     setIsLoading(true)
-    setIsSwitchLoading(false)
     try {
       console.log("userID for fetching messages: ", userId);
       const response = await axios.post('/api/get-messages', { userId })
@@ -93,32 +94,33 @@ function Dashboard() {
       })
     } finally {
       setIsLoading(false)
-      setIsSwitchLoading(false)
     }
   }
 
-  const handleDeleteMessage = (messageId: string) => {
+  const handleDeleteMessage = async (messageId: string) => {
     setMessages(messages.filter((message) => message._id !== messageId))
-    fetchMessages()
+    await fetchMessages()
   }
   // get userId 
   useEffect(() => {
     // find user
-    const user = localStorage.getItem("user") || null
-    if (!user) {
-      return
-    }
-    else {
+    const user = localStorage.getItem("user")
+    if (user) {
       const currentUser = JSON.parse(user)
       setUsername(currentUser.username)
-      console.log(currentUser.id);
       setUserId(currentUser.id)
-      console.log(userId);
-    }
-    fetchMessages()
-    checkAcceptMessageStatus()
 
-  }, [userId])
+      // console.log(currentUser.id);
+      // console.log(userId);
+    }
+  }, [])
+
+  useEffect(() => {
+    if (userId) {
+      fetchMessages()
+      checkAcceptMessageStatus()
+    }
+  }, [userId])  // Fetch messages and status once userId is set
 
 
   const baseUrl = `${window.location.protocol}//${window.location.host}`
@@ -174,7 +176,7 @@ function Dashboard() {
         variant="outline"
         onClick={(e) => {
           e.preventDefault();
-          fetchMessages(true);
+          fetchMessages();
         }}
       >
         {isLoading ? (

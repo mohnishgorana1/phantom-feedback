@@ -51,7 +51,6 @@ function MessageCard({ message, onMessageDelete }: MessageCardProps) {
       <CardHeader className="flex flex-col gap-5">
         <div className="flex w-full items-center justify-between">
           <CardTitle>{message.content}</CardTitle>
-          <p>{message._id}</p>
           <AlertDialog>
             <AlertDialogTrigger>
               <Button variant="destructive">
