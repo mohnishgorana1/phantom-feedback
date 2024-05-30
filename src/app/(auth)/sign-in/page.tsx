@@ -114,8 +114,8 @@ function SignInPage() {
               name="identifier"
               onChange={handleInputs}
               value={formData.identifier}
-              className="pl-2 py-1 border border-gray-400 rounded-md text-gray-900 w-full"
               required
+              className="pl-2 py-1 border border-gray-400 rounded-md text-gray-900 w-full"
             />
           </div>
           <div className="flex flex-col w-full">

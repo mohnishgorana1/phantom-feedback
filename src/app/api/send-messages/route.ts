@@ -5,7 +5,7 @@ import { Message } from "@/model/User";
 export async function POST(request: Response) {
     dbConnect()
     const { username, content } = await request.json()
-
+   
     try {
         const user = await UserModel.findOne({ username })
         if (!user) {
@@ -30,7 +30,7 @@ export async function POST(request: Response) {
         }
 
         // now user found and accepting messages
-        const newMessage = { content, createdAt: new Date() }
+        const newMessage = { content: content[0], createdAt: new Date() }     
         user.messages.push(newMessage as Message)
         await user.save()
         console.log("Message Send Successfully!");
