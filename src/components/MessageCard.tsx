@@ -74,7 +74,6 @@ function MessageCard({ message, onMessageDelete }: MessageCardProps) {
             </AlertDialogContent>
           </AlertDialog>
         </div>
-        <CardDescription>{message?.createdAt}</CardDescription>
       </CardHeader>
     </Card>
   );
