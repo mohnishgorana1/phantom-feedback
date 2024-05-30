@@ -21,8 +21,11 @@ export async function POST(request: Request) {
         }
 
         // remove messages
+        user.messages.map((m,i) => {
+            console.log(m._id);
+        })
         user.messages = user.messages.filter(message => message._id.toString() !== messageId)
-        await user.save()
+        await user.save() 
 
         return Response.json(
             {
