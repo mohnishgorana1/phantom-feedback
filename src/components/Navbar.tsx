@@ -13,8 +13,8 @@ function Navbar() {
   const [user, setUser] = useState(null)
   const [isDashboardPage, setIsDashboardPage] = useState(false)
 
-  const URLpathname = window.location.pathname
-  console.log(URLpathname);
+  // const URLpathname = window.location.pathname
+  // console.log(URLpathname);
 
 
 
@@ -46,11 +46,11 @@ function Navbar() {
     }
   }, [isLoggedIn])
 
-  useEffect(() => {
-    if (URLpathname === "/dashboard") {
-      setIsDashboardPage(true)
-    }
-  }, [URLpathname])
+  // useEffect(() => {
+  //   if (URLpathname === "/dashboard") {
+  //     setIsDashboardPage(true)
+  //   }
+  // }, [URLpathname])
 
 
   return (
