@@ -37,7 +37,7 @@ export async function POST(request: Request) {
         const user = await UserModel.findById(userId)
         console.log("user", user);
 
-        if (!user || user.length === 0) {
+        if (!user) {
             return Response.json(
                 {
                     success: false,
