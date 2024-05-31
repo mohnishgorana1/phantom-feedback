@@ -74,8 +74,8 @@ function Navbar() {
                 <Button className="w-full md:w-auto" size={"sm"}>Logout</Button>
               </div>
             </div>
-          ) : (<Link href={'/sign-in'} className="self-end">
-            <Button className="w-full md:w-auto">Login</Button>
+          ) : (<Link href={'/sign-in'} className="col-span-6 sm:col-span-7 place-self-start mr-52">
+            <Button className="md:w-auto">Login</Button>
           </Link>)
         }
 

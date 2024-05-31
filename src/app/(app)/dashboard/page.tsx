@@ -21,6 +21,7 @@ function Dashboard() {
   const [isLoading, setIsLoading] = useState(false)
   const [isSwitchLoading, setIsSwitchLoading] = useState(false)
   const { toast } = useToast()
+  const [profileUrl, setProfileUrl] = useState("")
 
   const form = useForm({
     resolver: zodResolver(acceptingMessagesSchema)
@@ -28,7 +29,7 @@ function Dashboard() {
   const { watch, register, setValue } = form
   const acceptMessages = watch('acceptMessages')
 
-  
+
   // * ------------Functions---------------------
 
   const checkAcceptMessageStatus = async () => {
@@ -67,7 +68,7 @@ function Dashboard() {
         title: 'Error updating status of isAccepting Messages',
         variant: "destructive"
       })
-    }finally{
+    } finally {
       setIsLoading(false)
     }
   }
@@ -112,6 +113,12 @@ function Dashboard() {
 
       // console.log(currentUser.id);
       // console.log(userId);
+
+      // Set profile URL
+      if (typeof window !== 'undefined') {
+        const baseUrl = `${window.location.protocol}//${window.location.host}`
+        setProfileUrl(`${baseUrl}/u/${currentUser.username}`)
+      }
     }
   }, [])
 
@@ -123,16 +130,13 @@ function Dashboard() {
   }, [userId])  // Fetch messages and status once userId is set
 
 
-  const baseUrl = `${window.location.protocol}//${window.location.host}`
-  const profileUrl = `${baseUrl}/u/${username}`
-
   const copyToClipboard = () => {
     navigator.clipboard.writeText(profileUrl)
     toast({
       title: "URL Copied"
     })
   }
-  
+
 
 
   if (!userId) {
